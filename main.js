@@ -1,4 +1,4 @@
-import Library from "/Scripts/MyLibrary.js";
+import Library from "./Scripts/MyLibrary.js";
 
 const mouseFollower = Library.mouseFollower();
 console.log(mouseFollower);
