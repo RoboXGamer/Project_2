@@ -111,57 +111,69 @@ const Library = {
 			});
 		});
 	},
-	makeMagnetGSAP: function (
-		selector,
-		options = {
-			distance: 200,
-			strength: 0.12,
-			animationDuration: 0.2,
-		},
+	makeMagnetGSAP:
+		/**
+		 * Applies a magnet effect to elements with a specified selector, making them slightly move towards the cursor.
+		 * @param {string} selector - The CSS selector for the elements to apply the magnet effect to.
+		 * @param {Object} [options] - Options for customizing the magnet effect.
+		 * @param {number} [options.distance=200] - The distance within which the magnet effect is active.
+		 * @param {number} [options.strength=0.12] - The strength of the magnet effect.
+		 * @param {number} [options.animationDuration=0.2] - The duration of the animation when elements are pulled or settled.
+		 * @param {HTMLElement} [customElement=null] - A custom element to apply the magnet effect to.
+		 */
+		function (
+			selector,
+			options = {
+				distance: 200,
+				strength: 0.12,
+				animationDuration: 0.2,
+			},
 
-		customElement = null
-	) {
-		const magnets = customElement
-			? [customElement]
-			: document.querySelectorAll(selector);
+			customElement = null
+		) {
+			const magnets = customElement
+				? [customElement]
+				: document.querySelectorAll(selector);
 
-		magnets.forEach((magnet) => {
-			document.addEventListener("mousemove", (event) => {
-				const mouseX = event.clientX;
-				const mouseY = event.clientY;
+			magnets.forEach((magnet) => {
+				document.addEventListener("mousemove", (event) => {
+					const mouseX = event.clientX;
+					const mouseY = event.clientY;
 
-				magnets.forEach((magnet) => {
-					const magnetX =
-						magnet.getBoundingClientRect().left + magnet.offsetWidth / 2;
-					const magnetY =
-						magnet.getBoundingClientRect().top + magnet.offsetHeight / 2;
+					magnets.forEach((magnet) => {
+						const magnetX =
+							magnet.getBoundingClientRect().left + magnet.offsetWidth / 2;
+						const magnetY =
+							magnet.getBoundingClientRect().top + magnet.offsetHeight / 2;
 
-					const distanceX = mouseX - magnetX;
-					const distanceY = mouseY - magnetY;
-					const distanceFromCursor = Math.sqrt(distanceX ** 2 + distanceY ** 2);
+						const distanceX = mouseX - magnetX;
+						const distanceY = mouseY - magnetY;
+						const distanceFromCursor = Math.sqrt(
+							distanceX ** 2 + distanceY ** 2
+						);
 
-					if (distanceFromCursor < options.distance) {
-						const translateX = distanceX * options.strength;
-						const translateY = distanceY * options.strength;
+						if (distanceFromCursor < options.distance) {
+							const translateX = distanceX * options.strength;
+							const translateY = distanceY * options.strength;
 
-						gsap.to(magnet, {
-							x: translateX,
-							y: translateY,
-							duration: options.animationDuration,
-							ease: "power2.out",
-						});
-					} else {
-						gsap.to(magnet, {
-							x: 0,
-							y: 0,
-							duration: options.animationDuration,
-							ease: "power2.out",
-						});
-					}
+							gsap.to(magnet, {
+								x: translateX,
+								y: translateY,
+								duration: options.animationDuration,
+								ease: "power2.out",
+							});
+						} else {
+							gsap.to(magnet, {
+								x: 0,
+								y: 0,
+								duration: options.animationDuration,
+								ease: "power2.out",
+							});
+						}
+					});
 				});
 			});
-		});
-	},
+		},
 };
 
 export default Library;
